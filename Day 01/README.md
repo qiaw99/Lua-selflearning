@@ -99,3 +99,92 @@ local tbl2 = {"apple", "pear", "orange", "grape"}
 function 可以以匿名函数（anonymous function）的方式通过参数传递:
 [Click here](https://github.com/qiaw99/Lua-selflearning/blob/master/Day%2001/testFun.lua)
 
+## 变量:
+Lua 变量有三种类型：全局变量、局部变量、表中的域。Lua 中的变量全是全局变量，那怕是语句块或是函数里，除非用 local 显式声明为局部变量。
+
+## 索引:
+```lua
+t[i]
+t.i                 -- 当索引为字符串类型时的一种简化写法
+gettable_event(t,i) -- 采用索引访问本质上是一个类似这样的函数调用
+```
+
+## for循环:
+```lua
+for var=exp1,exp2,exp3 do  
+    <执行体>  
+end  
+```
+var 从 exp1 变化到 exp2，每次变化以 exp3 为步长递增 var，并执行一次 "执行体"。exp3 是可选的，如果不指定，默认为1。
+
+泛型 for 循环通过一个迭代器函数来遍历所有值，类似 java 中的 foreach 语句。Lua 编程语言中泛型 for 循环语法格式:
+```lua
+--打印数组a的所有值  
+a = {"one", "two", "three"}
+for i, v in ipairs(a) do
+    print(i, v)
+end 
+```
+i是数组索引值，v是对应索引的数组元素值。ipairs是Lua提供的一个迭代器函数，用来迭代数组。
+
+## goto 语句:
+Lua 语言中的 goto 语句允许将控制流程无条件地转到被标记的语句处。
+```lua
+--[[ Syntax
+goto Label
+:: Label ::
+--]]
+local a = 1
+::label:: print("--- goto label ---")
+
+a = a+1
+if a < 3 then
+    goto label   -- a 小于 3 的时候跳转到标签 label
+end
+```
+
+## 函数: 
+Syntax:
+```lua
+optional_function_scope function function_name( argument1, argument2, argument3..., argumentn)
+    function_body
+    return result_params_comma_separated
+end
+```
+Lua 中可以将函数作为参数传递给函数:
+[Click here](https://github.com/qiaw99/Lua-selflearning/blob/master/Day%2001/myprint.lua)
+
+Lua函数可以返回多个结果值，比如string.find，其返回匹配串"开始和结束的下标"（如果不存在匹配串返回nil）.
+
+### 可变参数: 
+Lua 函数可以接受可变数目的参数，和 C 语言类似，在函数参数列表中使用三点 ... 表示函数有可变的参数。
+[Click here](https://github.com/qiaw99/Lua-selflearning/blob/master/Day%2001/varPara.lua)
+
+可以通过 select("#",...) 来获取可变参数的数量:
+```lua
+function average(...)
+   result = 0
+   local arg = {...}
+   for i,v in ipairs(arg) do
+      result = result + v
+   end
+   print("总共传入 " .. select("#", ...) .. " 个数")
+   return result / select("#", ...)
+end
+
+print("平均值为",average(10, 5, 3, 4, 5, 6))
+```
+有时候可能需要几个固定参数加上可变参数，固定参数必须放在变长参数之前:
+```lua
+function fwrite(fmt, ...)  ---> 固定的参数fmt
+    return io.write(string.format(fmt, ...))    
+end
+
+fwrite("qiaw99\n")       --->fmt = "qiaw99", 没有变长参数。  
+fwrite("%d %d\n", 1, 2)   --->fmt = "%d %d", 变长参数为 1 和 2
+```
+
+通常在遍历变长参数的时候只需要使用 {…}，然而变长参数可能会包含一些 nil，那么就可以用 select 函数来访问变长参数了：select('#', …) 或者 select(n, …)
+- select('#', …) 返回可变参数的长度
+- select(n, …) 用于返回 n 到 select('#',…) 的参数
+[Click here](https://github.com/qiaw99/Lua-selflearning/blob/master/Day%2001/select.lua)
