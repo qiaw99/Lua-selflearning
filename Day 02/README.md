@@ -43,7 +43,7 @@ string.byte("ABCD")
 ```
 8. string.len(arg): 计算字符串长度。
 9. string.rep(string, n): 返回字符串string的n个拷贝
-10. 	string.gmatch(str, pattern): 
+10. string.gmatch(str, pattern): 
 回一个迭代器函数，每一次调用这个函数，返回一个在字符串 str 找到的下一个符合 pattern 描述的子串。如果参数 pattern 描述的字符串没有找到，迭代函数返回nil。
 ```lua
 for word in string.gmatch("Hello Lua user", "%a+") do 
